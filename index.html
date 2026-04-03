@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -161,10 +162,10 @@
     .plan-features { list-style: none; margin-bottom: 22px; }
     .plan-features li { font-size: 0.83rem; color: var(--muted); padding: 4px 0; display: flex; align-items: flex-start; gap: 8px; }
     .feat-check { color: var(--blue); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-    .plan-cta { display: block; width: 100%; padding: 11px; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 600; text-align: center; text-decoration: none; cursor: pointer; transition: all 0.2s; }
+    .plan-cta { display: block; width: 100%; padding: 11px; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 600; text-align: center; text-decoration: none; cursor: pointer; transition: all 0.2s; border: none; }
     .plan-cta-outline { background: transparent; color: var(--blue); border: 1.5px solid var(--blue); }
     .plan-cta-outline:hover { background: var(--blue-lt); }
-    .plan-cta-filled { background: var(--blue); color: #fff; border: none; }
+    .plan-cta-filled { background: var(--blue); color: #fff; }
     .plan-cta-filled:hover { background: var(--blue-dk); }
     .pricing-guarantee { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.8rem; color: var(--muted); }
 
@@ -346,7 +347,7 @@
 
       <button id="generate-btn">⚡ Generate Full Strategy</button>
       <div id="error-msg"></div>
-      
+
     </div>
   </div>
 </section>
@@ -373,8 +374,8 @@
   <p class="pricing-sub">Cancel anytime. No hidden fees. All plans include all niches, platforms &amp; 15 languages.</p>
 
   <div class="pricing-grid">
+    <!-- FREE -->
     <div class="plan-card">
-      <div class="popular-badge">Most Popular</div>
       <div class="plan-tier">Free</div>
       <div class="plan-price-row"><div class="plan-price">$0</div><div class="plan-price-period">/ forever</div></div>
       <p class="plan-tagline">Try ViralGuideAI with no commitment.</p>
@@ -388,8 +389,8 @@
       <button class="plan-cta plan-cta-outline" onclick="handleFreePlan()">Start for Free</button>
     </div>
 
+    <!-- STARTER -->
     <div class="plan-card">
-      <div class="popular-badge">Most Popular</div>
       <div class="plan-tier">Starter</div>
       <div class="plan-price-row"><div class="plan-price">$9</div><div class="plan-price-period">/ month</div></div>
       <p class="plan-tagline">For creators building their content engine.</p>
@@ -400,9 +401,10 @@
         <li><span class="feat-check">✓</span>Advanced monetization tactics</li>
         <li><span class="feat-check">✓</span>All 15 languages</li>
       </ul>
-      <a href="https://YOUR_STORE.lemonsqueezy.com/checkout/buy/STARTER_VARIANT_ID" class="plan-cta plan-cta-outline" target="_blank" rel="noopener">Get Starter</a>
+      <button class="plan-cta plan-cta-outline" onclick="openPaddleCheckout('starter')">Get Starter</button>
     </div>
 
+    <!-- PRO -->
     <div class="plan-card popular">
       <div class="popular-badge">Most Popular</div>
       <div class="plan-tier">Pro</div>
@@ -415,11 +417,11 @@
         <li><span class="feat-check">✓</span>Full viral scoring breakdowns</li>
         <li><span class="feat-check">✓</span>Priority support</li>
       </ul>
-      <a href="https://YOUR_STORE.lemonsqueezy.com/checkout/buy/PRO_VARIANT_ID" class="plan-cta plan-cta-filled" target="_blank" rel="noopener">Get Pro</a>
+      <button class="plan-cta plan-cta-filled" onclick="openPaddleCheckout('pro')">Get Pro</button>
     </div>
 
+    <!-- GROWTH -->
     <div class="plan-card">
-      <div class="popular-badge">Most Popular</div>
       <div class="plan-tier">Growth</div>
       <div class="plan-price-row"><div class="plan-price">$29</div><div class="plan-price-period">/ month</div></div>
       <p class="plan-tagline">For agencies &amp; power users with no limits.</p>
@@ -430,11 +432,11 @@
         <li><span class="feat-check">✓</span>Cancel anytime autonomously</li>
         <li><span class="feat-check">✓</span>Early access to new features</li>
       </ul>
-      <a href="https://YOUR_STORE.lemonsqueezy.com/checkout/buy/GROWTH_VARIANT_ID" class="plan-cta plan-cta-outline" target="_blank" rel="noopener">Get Growth</a>
+      <button class="plan-cta plan-cta-outline" onclick="openPaddleCheckout('growth')">Get Growth</button>
     </div>
   </div>
 
-
+  <p class="pricing-guarantee">🔒 Secure checkout via Paddle · Cancel anytime</p>
 </section>
 
 <!-- ── FOOTER ── -->
@@ -454,6 +456,36 @@
   const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxzbGd4eXdleXVudHNncWplbWZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxNzA1NTQsImV4cCI6MjA4OTc0NjU1NH0.FeCK33hMnPt1So8stgAym0KhW_SclYpWTuFhxtlvW8w";
   const GENERATE_URL      = `${SUPABASE_URL}/functions/v1/generate`;
 
+  // ── PADDLE CONFIG ───────────────────────────────────────────────────────────
+  // Replace these with your actual Paddle price IDs from your Paddle dashboard
+  // Format: pri_xxxxxxxxxxxxxxxxxx
+  const PADDLE_CLIENT_TOKEN = "live_955e1f1fb47319c5aea7ea9ffd0";
+  const PADDLE_PRICE_IDS = {
+    starter: "pri_01kn9hshy06eb3ng5jesyb4z87",
+    pro:     "pri_01kn9hvdw1brps2arsdxxm2zrz",
+    growth:  "pri_01kn9hwwct1dtyq816cn5xq27b"
+  };
+
+  // Initialize Paddle
+  Paddle.Initialize({ token: PADDLE_CLIENT_TOKEN });
+
+  function openPaddleCheckout(plan) {
+    const priceId = PADDLE_PRICE_IDS[plan];
+    if (!priceId || priceId.includes("REPLACE")) {
+      alert("Paddle checkout not configured yet. Coming soon!");
+      return;
+    }
+    const checkoutOptions = {
+      items: [{ priceId: priceId, quantity: 1 }],
+    };
+    // Pre-fill email if user is logged in
+    if (currentSession?.user?.email) {
+      checkoutOptions.customer = { email: currentSession.user.email };
+    }
+    Paddle.Checkout.open(checkoutOptions);
+  }
+
+  // ── SUPABASE ────────────────────────────────────────────────────────────────
   const { createClient } = supabase;
   const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   let currentSession = null;
@@ -483,7 +515,7 @@
 
   // ── GENERATE ───────────────────────────────────────────────────────────────
   document.getElementById('generate-btn').addEventListener('click', async () => {
-    const { data: { session } } = await sb.auth.getSession();
+    const session = currentSession;
     if (!session) {
       const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } });
       if (error) showError(error.message);
@@ -504,7 +536,11 @@
     try {
       const res = await fetch(GENERATE_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}`, 'apikey': eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxzbGd4eXdleXVudHNncWplbWZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxNzA1NTQsImV4cCI6MjA4OTc0NjU1NH0.FeCK33hMnPt1So8stgAym0KhW_SclYpWTuFhxtlvW8w },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+          'apikey': SUPABASE_ANON_KEY
+        },
         body: JSON.stringify({ topic, niche, platform, audience, language }),
       });
       const data = await res.json();
@@ -552,7 +588,6 @@
 
       const card = document.createElement('div');
       card.className = 's-card' + (sec.full ? ' full' : '') + (sec.trending ? ' trending-card' : '');
-
       card.innerHTML = `<div class="s-card-header"><div class="s-card-icon" style="background:${sec.bg}">${sec.emoji}</div><div class="s-card-title">${sec.label}</div></div>`;
 
       const body = document.createElement('div');
