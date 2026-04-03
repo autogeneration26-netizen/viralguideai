@@ -504,7 +504,7 @@
     try {
       const res = await fetch(GENERATE_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` }, 'apikey': eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxzbGd4eXdleXVudHNncWplbWZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxNzA1NTQsImV4cCI6MjA4OTc0NjU1NH0.FeCK33hMnPt1So8stgAym0KhW_SclYpWTuFhxtlvW8w },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}`, 'apikey': eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxzbGd4eXdleXVudHNncWplbWZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxNzA1NTQsImV4cCI6MjA4OTc0NjU1NH0.FeCK33hMnPt1So8stgAym0KhW_SclYpWTuFhxtlvW8w },
         body: JSON.stringify({ topic, niche, platform, audience, language }),
       });
       const data = await res.json();
