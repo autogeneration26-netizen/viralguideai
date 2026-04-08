@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creator Collaboration Directory – ViralGuideAI</title>
+  <meta name="description" content="Connect with creators and brands worldwide. Browse the ViralGuideAI collaboration directory — filter by niche, platform, and follower range." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --blue:#1A56DB; --blue-dk:#1344B8; --blue-lt:#EFF6FF; --slate:#0F172A; --muted:#475569; --muted2:#94A3B8; --border:#E2E8F0; --bg:#FFFFFF; --surface:#F8FAFC; --radius:12px; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--slate); line-height: 1.6; }
+
+    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 6%; height: 64px; background: rgba(255,255,255,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.02em; font-size: 1.2rem; font-weight: 800; color: var(--slate); text-decoration: none; }
+    .nav-logo span { color: var(--blue); }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    #auth-btn { background: var(--blue); color: #fff; border: none; padding: 8px 20px; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+    #user-email { font-size: 0.78rem; color: var(--muted); max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* HERO */
+    .page-hero { background: linear-gradient(135deg,#0F172A 0%,#1A56DB 100%); padding: 60px 6% 50px; text-align: center; }
+    .page-hero h1 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.02em; font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 800; color: #fff; margin-bottom: 12px; }
+    .page-hero p { font-size: 0.95rem; color: rgba(255,255,255,0.8); max-width: 520px; margin: 0 auto 28px; }
+    .hero-stats { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+    .hero-stat { text-align: center; }
+    .hero-stat-num { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.02em; font-size: 1.4rem; font-weight: 800; color: #fff; }
+    .hero-stat-label { font-size: 0.7rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* LIST + APPLY TABS */
+    .tabs { display: flex; justify-content: center; gap: 0; margin: 40px auto 0; max-width: 400px; background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; padding: 4px; }
+    .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 600; color: var(--muted); cursor: pointer; border-radius: 8px; transition: all 0.2s; }
+    .tab-btn.active { background: var(--blue); color: #fff; }
+
+    /* FILTERS */
+    .filters { max-width: 1100px; margin: 32px auto 0; padding: 0 6%; display: flex; gap: 12px; flex-wrap: wrap; }
+    .filter-select { padding: 9px 14px; border: 1.5px solid var(--border); border-radius: var(--radius); font-family: 'Poppins', sans-serif; font-size: 0.83rem; color: var(--slate); background: #fff; outline: none; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 30px; }
+    .filter-select:focus { border-color: var(--blue); }
+    .filter-search { flex: 1; min-width: 200px; padding: 9px 14px; border: 1.5px solid var(--border); border-radius: var(--radius); font-family: 'Poppins', sans-serif; font-size: 0.83rem; color: var(--slate); outline: none; }
+    .filter-search:focus { border-color: var(--blue); }
+
+    /* DIRECTORY GRID */
+    .directory { max-width: 1100px; margin: 28px auto 80px; padding: 0 6%; }
+    .creator-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+    .creator-card { background: #fff; border: 1.5px solid var(--border); border-radius: 18px; padding: 24px 22px; transition: box-shadow 0.2s, transform 0.2s; position: relative; }
+    .creator-card:hover { box-shadow: 0 8px 32px rgba(15,23,42,0.1); transform: translateY(-2px); }
+    .creator-avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--blue-lt); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 14px; }
+    .creator-name { font-size: 1rem; font-weight: 700; color: var(--slate); margin-bottom: 2px; }
+    .creator-handle { font-size: 0.78rem; color: var(--blue); margin-bottom: 12px; }
+    .creator-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+    .creator-tag { background: var(--surface); border: 1px solid var(--border); border-radius: 99px; padding: 3px 10px; font-size: 0.72rem; font-weight: 500; color: var(--muted); }
+    .creator-tag.blue { background: var(--blue-lt); border-color: var(--blue-lt); color: var(--blue); }
+    .creator-bio { font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+    .creator-collab-type { font-size: 0.75rem; font-weight: 600; color: var(--slate); margin-bottom: 14px; }
+    .creator-collab-type span { background: #F0FDF4; color: #059669; border-radius: 6px; padding: 3px 8px; }
+    .creator-contact { display: block; width: 100%; padding: 9px; border-radius: 8px; background: var(--blue); color: #fff; border: none; font-family: 'Poppins', sans-serif; font-size: 0.82rem; font-weight: 600; text-align: center; text-decoration: none; cursor: pointer; transition: background 0.2s; }
+    .creator-contact:hover { background: var(--blue-dk); }
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+    .empty-state h3 { font-size: 1.1rem; font-weight: 600; color: var(--slate); margin-bottom: 8px; }
+    .loading-state { text-align: center; padding: 40px; color: var(--muted); font-size: 0.9rem; }
+
+    /* APPLY FORM */
+    .apply-section { max-width: 680px; margin: 32px auto 80px; padding: 0 6%; }
+    .apply-card { background: #fff; border: 1.5px solid var(--border); border-radius: 24px; padding: 40px 44px; box-shadow: 0 8px 48px rgba(15,23,42,0.08); }
+    @media(max-width:600px) { .apply-card { padding: 28px 20px; } }
+    .apply-card h2 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.02em; font-size: 1.5rem; font-weight: 800; color: var(--slate); margin-bottom: 6px; }
+    .apply-card p { font-size: 0.85rem; color: var(--muted); margin-bottom: 28px; }
+    .field { margin-bottom: 18px; }
+    .field label { display: block; font-size: 0.74rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px; }
+    .field input, .field select, .field textarea { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: var(--radius); font-family: 'Poppins', sans-serif; font-size: 0.88rem; color: var(--slate); background: var(--surface); outline: none; transition: border-color 0.2s; appearance: none; -webkit-appearance: none; resize: vertical; }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--blue); background: #fff; }
+    .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media(max-width:480px) { .field-row { grid-template-columns: 1fr; } }
+    .tc-box { display: flex; align-items: flex-start; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 20px; }
+    .tc-box input[type="checkbox"] { margin-top: 2px; flex-shrink: 0; accent-color: var(--blue); width: 16px; height: 16px; }
+    .tc-box label { font-size: 0.78rem; color: var(--muted); line-height: 1.6; cursor: pointer; }
+    .tc-box a { color: var(--blue); }
+    .submit-btn { width: 100%; padding: 14px; background: var(--blue); color: #fff; border: none; border-radius: var(--radius); font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .submit-btn:hover { background: var(--blue-dk); }
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    #form-msg { display: none; padding: 12px 16px; border-radius: var(--radius); font-size: 0.85rem; margin-top: 14px; }
+    #form-msg.success { background: #F0FDF4; color: #059669; border: 1px solid #A7F3D0; }
+    #form-msg.error { background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+
+    /* LOCKED */
+    .locked-overlay { text-align: center; padding: 60px 20px; }
+    .locked-icon { font-size: 2.5rem; margin-bottom: 16px; }
+    .locked-title { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.02em; font-size: 1.4rem; font-weight: 800; color: var(--slate); margin-bottom: 8px; }
+    .locked-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 24px; max-width: 400px; margin-left: auto; margin-right: auto; }
+    .locked-btn { background: var(--blue); color: #fff; border: none; padding: 12px 28px; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }
+
+    footer { border-top: 1px solid var(--border); padding: 24px 6%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    footer p { font-size: 0.8rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--blue); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">Viral<span>Guide</span>AI</a>
+  <div class="nav-right">
+    <span id="user-email"></span>
+    <button id="auth-btn">Get Started</button>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <h1>🤝 Creator Collaboration Directory</h1>
+  <p>Connect with creators and brands worldwide. Find your next collab partner, brand deal, or shoutout exchange — directly, no middleman.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">🌍</div><div class="hero-stat-label">Worldwide</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">Free</div><div class="hero-stat-label">To Browse</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">0%</div><div class="hero-stat-label">Commission</div></div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div style="padding: 0 6%;">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('browse')">🔍 Browse Directory</button>
+    <button class="tab-btn" onclick="showTab('apply')">➕ List Yourself</button>
+  </div>
+</div>
+
+<!-- BROWSE TAB -->
+<div id="tab-browse">
+  <div class="filters">
+    <input class="filter-search" type="text" id="search-input" placeholder="Search by name or niche..." oninput="filterCreators()" />
+    <select class="filter-select" id="filter-niche" onchange="filterCreators()">
+      <option value="">All Niches</option>
+      <option value="Fitness & Health">Fitness &amp; Health</option>
+      <option value="Finance & Money">Finance &amp; Money</option>
+      <option value="Business & Entrepreneurship">Business &amp; Entrepreneurship</option>
+      <option value="Food & Cooking">Food &amp; Cooking</option>
+      <option value="Travel">Travel</option>
+      <option value="Fashion & Beauty">Fashion &amp; Beauty</option>
+      <option value="Tech & AI">Tech &amp; AI</option>
+      <option value="Education & Learning">Education &amp; Learning</option>
+      <option value="Motivation & Mindset">Motivation &amp; Mindset</option>
+      <option value="Entertainment">Entertainment</option>
+    </select>
+    <select class="filter-select" id="filter-platform" onchange="filterCreators()">
+      <option value="">All Platforms</option>
+      <option value="Instagram">Instagram</option>
+      <option value="YouTube">YouTube</option>
+      <option value="TikTok">TikTok</option>
+      <option value="LinkedIn">LinkedIn</option>
+      <option value="Twitter / X">Twitter / X</option>
+    </select>
+    <select class="filter-select" id="filter-followers" onchange="filterCreators()">
+      <option value="">All Sizes</option>
+      <option value="1k-10k">1k – 10k</option>
+      <option value="10k-100k">10k – 100k</option>
+      <option value="100k+">100k+</option>
+    </select>
+    <select class="filter-select" id="filter-collab" onchange="filterCreators()">
+      <option value="">All Collab Types</option>
+      <option value="Brand Deal">Brand Deal</option>
+      <option value="Creator Collab">Creator Collab</option>
+      <option value="Shoutout Exchange">Shoutout Exchange</option>
+    </select>
+  </div>
+
+  <div class="directory">
+    <div id="directory-content">
+      <div class="loading-state">Loading creators...</div>
+    </div>
+  </div>
+</div>
+
+<!-- APPLY TAB -->
+<div id="tab-apply" style="display:none">
+  <div class="apply-section">
+    <div id="apply-locked" style="display:none">
+      <div class="locked-overlay">
+        <div class="locked-icon">🔒</div>
+        <div class="locked-title">Viral &amp; Empire Plan Required</div>
+        <p class="locked-sub">Listing yourself in the Creator Directory is exclusive to Viral ($20/mo) and Empire ($30/mo) plan members.</p>
+        <a href="/#pricing" class="locked-btn">View Plans</a>
+      </div>
+    </div>
+    <div id="apply-form-wrap">
+      <div class="apply-card">
+        <h2>List Yourself as a Creator</h2>
+        <p>Fill in your details below. Your profile will appear in the public directory immediately after submission.</p>
+
+        <div class="field-row">
+          <div class="field"><label>Full Name *</label><input type="text" id="f-name" placeholder="e.g. Priya Sharma" /></div>
+          <div class="field"><label>Display Handle *</label><input type="text" id="f-handle" placeholder="e.g. @priyacreates" /></div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Primary Platform *</label>
+            <select id="f-platform">
+              <option value="">— Select —</option>
+              <option>Instagram</option>
+              <option>YouTube</option>
+              <option>TikTok</option>
+              <option>LinkedIn</option>
+              <option>Twitter / X</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Follower Range *</label>
+            <select id="f-followers">
+              <option value="">— Select —</option>
+              <option>1k-10k</option>
+              <option>10k-100k</option>
+              <option>100k+</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Content Niche *</label>
+          <select id="f-niche">
+            <option value="">— Select your niche —</option>
+            <option>Fitness &amp; Health</option>
+            <option>Finance &amp; Money</option>
+            <option>Business &amp; Entrepreneurship</option>
+            <option>Food &amp; Cooking</option>
+            <option>Travel</option>
+            <option>Fashion &amp; Beauty</option>
+            <option>Tech &amp; AI</option>
+            <option>Education &amp; Learning</option>
+            <option>Motivation &amp; Mindset</option>
+            <option>Entertainment</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Looking For *</label>
+          <select id="f-collab">
+            <option value="">— Select —</option>
+            <option>Brand Deal</option>
+            <option>Creator Collab</option>
+            <option>Shoutout Exchange</option>
+            <option>Brand Deal &amp; Creator Collab</option>
+            <option>All Types</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Short Bio (max 150 chars)</label>
+          <textarea id="f-bio" rows="3" maxlength="150" placeholder="e.g. Fitness creator from Mumbai posting daily workout and nutrition tips for beginners."></textarea>
+        </div>
+        <div class="field">
+          <label>Contact Link *</label>
+          <input type="text" id="f-contact" placeholder="e.g. https://instagram.com/yourhandle or email@example.com" />
+        </div>
+        <div class="field">
+          <label>Country</label>
+          <input type="text" id="f-country" placeholder="e.g. India, USA, UAE" />
+        </div>
+
+        <div class="tc-box">
+          <input type="checkbox" id="f-tc" />
+          <label for="f-tc">I confirm all information I have submitted is accurate. I understand ViralGuideAI is a free discovery directory only. ViralGuideAI does not verify profiles, endorse creators, or take any responsibility for collaboration outcomes, disputes, payments, or agreements made between parties. All collaborations are entered into at my own risk. I am 18 years of age or older. I agree to the <a href="terms.html" target="_blank">Terms &amp; Conditions</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>.</label>
+        </div>
+
+        <button class="submit-btn" id="submit-btn" onclick="submitProfile()">🚀 Submit My Profile</button>
+        <div id="form-msg"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 ViralGuideAI. All rights reserved.</p>
+  <nav class="footer-links">
+    <a href="/">Home</a>
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="disclaimer.html">Disclaimer</a>
+  </nav>
+</footer>
+
+<script>
+  const SUPABASE_URL      = "https://lslgxyweyuntsgqjemfh.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxzbGd4eXdleXVudHNncWplbWZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQxNzA1NTQsImV4cCI6MjA4OTc0NjU1NH0.FeCK33hMnPt1So8stgAym0KhW_SclYpWTuFhxtlvW8w";
+  const { createClient } = supabase;
+  const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  let currentSession = null;
+  let allCreators = [];
+
+  const PLATFORM_EMOJI = { 'Instagram': '📸', 'YouTube': '▶️', 'TikTok': '🎵', 'LinkedIn': '💼', 'Twitter / X': '🐦' };
+  const NICHE_EMOJI = { 'Fitness & Health': '💪', 'Finance & Money': '💰', 'Business & Entrepreneurship': '🚀', 'Food & Cooking': '🍕', 'Travel': '✈️', 'Fashion & Beauty': '✨', 'Tech & AI': '🤖', 'Education & Learning': '📚', 'Motivation & Mindset': '🧠', 'Entertainment': '🎬' };
+
+  function updateUI(session) {
+    currentSession = session;
+    if (session?.user) {
+      document.getElementById('user-email').textContent = session.user.email;
+      document.getElementById('auth-btn').textContent = 'Sign Out';
+    } else {
+      document.getElementById('user-email').textContent = '';
+      document.getElementById('auth-btn').textContent = 'Get Started';
+    }
+  }
+
+  sb.auth.getSession().then(({ data: { session } }) => { updateUI(session); loadCreators(); });
+  sb.auth.onAuthStateChange((_e, session) => updateUI(session));
+
+  document.getElementById('auth-btn').addEventListener('click', async () => {
+    if (currentSession) { await sb.auth.signOut(); }
+    else { await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.href } }); }
+  });
+
+  function showTab(tab) {
+    document.getElementById('tab-browse').style.display = tab === 'browse' ? 'block' : 'none';
+    document.getElementById('tab-apply').style.display  = tab === 'apply'  ? 'block' : 'none';
+    document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', (tab === 'browse' && i === 0) || (tab === 'apply' && i === 1)));
+    if (tab === 'apply') checkApplyAccess();
+  }
+
+  function checkApplyAccess() {
+    // For now all logged-in users can apply — restrict to paid plans via Supabase later
+    if (!currentSession) {
+      document.getElementById('apply-locked').style.display = 'block';
+      document.getElementById('apply-form-wrap').style.display = 'none';
+      document.getElementById('apply-locked').innerHTML = `<div class="locked-overlay"><div class="locked-icon">🔒</div><div class="locked-title">Sign In Required</div><p class="locked-sub">Please sign in to list yourself in the Creator Directory.</p><button class="locked-btn" onclick="sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.href}})">Sign In with Google</button></div>`;
+    }
+  }
+
+  async function loadCreators() {
+    try {
+      const { data, error } = await sb.from('creator_collabs').select('*').order('created_at', { ascending: false });
+      if (error) throw error;
+      allCreators = data || [];
+      renderCreators(allCreators);
+    } catch (e) {
+      document.getElementById('directory-content').innerHTML = `<div class="empty-state"><h3>Directory Loading</h3><p>The creator directory will appear here once profiles are submitted. Be the first to list yourself!</p></div>`;
+    }
+  }
+
+  function filterCreators() {
+    const search   = document.getElementById('search-input').value.toLowerCase();
+    const niche    = document.getElementById('filter-niche').value;
+    const platform = document.getElementById('filter-platform').value;
+    const followers= document.getElementById('filter-followers').value;
+    const collab   = document.getElementById('filter-collab').value;
+
+    const filtered = allCreators.filter(c => {
+      if (search && !c.name?.toLowerCase().includes(search) && !c.niche?.toLowerCase().includes(search) && !c.bio?.toLowerCase().includes(search)) return false;
+      if (niche    && c.niche    !== niche)    return false;
+      if (platform && c.platform !== platform) return false;
+      if (followers && c.followers !== followers) return false;
+      if (collab   && !c.collab_type?.includes(collab)) return false;
+      return true;
+    });
+    renderCreators(filtered);
+  }
+
+  function renderCreators(creators) {
+    const el = document.getElementById('directory-content');
+    if (!creators.length) {
+      el.innerHTML = `<div class="empty-state"><h3>No creators found</h3><p>Try adjusting your filters, or be the first to list yourself!</p></div>`;
+      return;
+    }
+    const grid = document.createElement('div');
+    grid.className = 'creator-grid';
+    creators.forEach(c => {
+      const card = document.createElement('div');
+      card.className = 'creator-card';
+      card.innerHTML = `
+        <div class="creator-avatar">${NICHE_EMOJI[c.niche] || '🎬'}</div>
+        <div class="creator-name">${escHtml(c.name)}</div>
+        <div class="creator-handle">${escHtml(c.handle)}</div>
+        <div class="creator-tags">
+          <span class="creator-tag blue">${PLATFORM_EMOJI[c.platform] || ''} ${escHtml(c.platform)}</span>
+          <span class="creator-tag">${escHtml(c.niche)}</span>
+          <span class="creator-tag">${escHtml(c.followers)} followers</span>
+          ${c.country ? `<span class="creator-tag">📍 ${escHtml(c.country)}</span>` : ''}
+        </div>
+        ${c.bio ? `<div class="creator-bio">${escHtml(c.bio)}</div>` : ''}
+        <div class="creator-collab-type">Looking for: <span>${escHtml(c.collab_type)}</span></div>
+        <a class="creator-contact" href="${escHtml(c.contact_link)}" target="_blank" rel="noopener noreferrer">💬 Contact ${escHtml(c.name.split(' ')[0])}</a>
+      `;
+      grid.appendChild(card);
+    });
+    el.innerHTML = '';
+    el.appendChild(grid);
+  }
+
+  function escHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  async function submitProfile() {
+    if (!currentSession) { alert('Please sign in first.'); return; }
+
+    const name     = document.getElementById('f-name').value.trim();
+    const handle   = document.getElementById('f-handle').value.trim();
+    const platform = document.getElementById('f-platform').value;
+    const followers= document.getElementById('f-followers').value;
+    const niche    = document.getElementById('f-niche').value;
+    const collab   = document.getElementById('f-collab').value;
+    const bio      = document.getElementById('f-bio').value.trim();
+    const contact  = document.getElementById('f-contact').value.trim();
+    const country  = document.getElementById('f-country').value.trim();
+    const tc       = document.getElementById('f-tc').checked;
+
+    if (!name || !handle || !platform || !followers || !niche || !collab || !contact) { showFormMsg('Please fill in all required fields.', 'error'); return; }
+    if (!tc) { showFormMsg('Please agree to the Terms & Conditions to proceed.', 'error'); return; }
+
+    document.getElementById('submit-btn').disabled = true;
+    document.getElementById('submit-btn').textContent = 'Submitting...';
+
+    try {
+      const { error } = await sb.from('creator_collabs').insert([{
+        name, handle, platform, followers, niche,
+        collab_type: collab, bio, contact_link: contact,
+        country, user_id: currentSession.user.id
+      }]);
+      if (error) throw error;
+      showFormMsg('🎉 Your profile has been listed! Refresh the Browse tab to see it.', 'success');
+      document.getElementById('submit-btn').textContent = '✅ Listed!';
+      loadCreators();
+    } catch (e) {
+      showFormMsg('Something went wrong. Please try again.', 'error');
+      document.getElementById('submit-btn').disabled = false;
+      document.getElementById('submit-btn').textContent = '🚀 Submit My Profile';
+    }
+  }
+
+  function showFormMsg(msg, type) {
+    const el = document.getElementById('form-msg');
+    el.textContent = msg;
+    el.className = type;
+    el.style.display = 'block';
+  }
+</script>
+</body>
+</html>
