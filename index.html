@@ -880,27 +880,10 @@
 
   function openPaddleCheckout(plan){
     if(!currentSession){ window.location.href='/auth.html'; return; }
-    if(typeof Paddle === 'undefined'){
-      showPaddleError();return;
-    }
+    if(typeof Paddle === 'undefined'){ alert('Payment system loading. Please refresh and try again.'); return; }
     const opts={items:[{priceId:PADDLE_PRICE_IDS[plan],quantity:1}]};
     if(currentSession?.user?.email)opts.customer={email:currentSession.user.email};
-    try{ Paddle.Checkout.open(opts); }
-    catch(e){ showPaddleError(); }
-  }
-
-  function showPaddleError(){
-    const el = document.createElement('div');
-    el.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:9999;backdrop-filter:blur(8px)';
-    el.innerHTML=`<div style="background:#0D1B3E;border:1px solid rgba(59,130,246,0.3);border-radius:20px;padding:40px 36px;max-width:420px;text-align:center;box-shadow:0 0 60px rgba(59,130,246,0.15)">
-      <div style="font-size:2.5rem;margin-bottom:16px">🔧</div>
-      <h3 style="font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:10px;letter-spacing:-0.02em">Payments launching soon</h3>
-      <p style="font-size:0.88rem;color:#94A3B8;margin-bottom:24px;line-height:1.7">We're finalising our payment setup. In the meantime, use the <strong style="color:#60A5FA">Free plan</strong> — 10 strategies/month, no card needed.</p>
-      <a href="/auth.html" style="display:block;background:linear-gradient(135deg,#1D4ED8,#3B82F6);color:#fff;padding:12px 28px;border-radius:10px;text-decoration:none;font-weight:700;font-size:0.9rem;margin-bottom:12px;box-shadow:0 0 20px rgba(59,130,246,0.3)">Start Free →</a>
-      <button onclick="this.closest('div').parentElement.remove()" style="background:transparent;border:none;color:#475569;font-size:0.82rem;cursor:pointer;padding:8px">Dismiss</button>
-    </div>`;
-    document.body.appendChild(el);
-    el.addEventListener('click',function(e){if(e.target===el)el.remove();});
+    Paddle.Checkout.open(opts);
   }
 
   const{createClient}=supabase;
