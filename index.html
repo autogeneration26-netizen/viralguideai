@@ -62,6 +62,13 @@
     .nav-signup:hover{box-shadow:0 0 28px rgba(59,130,246,0.55);transform:translateY(-1px)}
     #user-email{font-size:0.75rem;color:rgba(255,255,255,0.5);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     @media(max-width:900px){.nav-center{display:none}}
+    .mob-btn{display:none;background:none;border:1px solid rgba(255,255,255,0.2);color:#fff;padding:7px 11px;border-radius:8px;cursor:pointer;font-size:1.1rem;line-height:1}
+    @media(max-width:900px){.mob-btn{display:block}}
+    .mob-nav{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(4,9,26,0.97);backdrop-filter:blur(24px);border-bottom:1px solid rgba(59,130,246,0.2);padding:12px 6%;z-index:99;flex-direction:column;gap:4px}
+    .mob-nav.open{display:flex}
+    .mob-nav a{font-size:0.9rem;font-weight:500;color:rgba(255,255,255,0.75);text-decoration:none;padding:10px 14px;border-radius:8px}
+    .mob-nav a:hover,.mob-nav a:active{background:rgba(255,255,255,0.07);color:#fff}
+    .mob-nav .mob-cyan{color:var(--cyan);background:rgba(34,211,238,0.06);border:1px solid rgba(34,211,238,0.2)}
     @media(max-width:480px){.lang-wrap{display:none}}
 
     /* HERO */
@@ -324,6 +331,7 @@
     <a class="nav-link" href="#how">How It Works</a>
     <a class="nav-link nav-link-cyan" href="#trend-alert">🔔 Trend Alert</a>
     <a class="nav-link" href="#collab">Creator Network</a>
+    <a class="nav-link" href="#generator">Strategy Generator</a>
     <a class="nav-link" href="#pricing">Pricing</a>
   </div>
   <div class="nav-right">
@@ -351,7 +359,16 @@
     <button id="auth-btn" style="display:none">Sign Out</button>
     <a href="/auth.html" id="nav-get-started" class="nav-signup">Get Started</a>
   </div>
+<button class="mob-btn" onclick="document.getElementById('mob-nav').classList.toggle('open')">&#9776;</button>
 </nav>
+<div class="mob-nav" id="mob-nav">
+  <a href="#features" onclick="document.getElementById('mob-nav').classList.remove('open')">Why ViralGuideAI</a>
+  <a href="#how" onclick="document.getElementById('mob-nav').classList.remove('open')">How It Works</a>
+  <a class="mob-cyan" href="#trend-alert" onclick="document.getElementById('mob-nav').classList.remove('open')">&#128276; Trend Alert</a>
+  <a href="#collab" onclick="document.getElementById('mob-nav').classList.remove('open')">Creator Network</a>
+  <a href="#generator" onclick="document.getElementById('mob-nav').classList.remove('open')">&#9889; Strategy Generator</a>
+  <a href="#pricing" onclick="document.getElementById('mob-nav').classList.remove('open')">Pricing</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -549,7 +566,7 @@
 </section>
 
 <!-- ENGINE -->
-<section class="engine-section">
+<section class="engine-section" id="generator">
   <div class="engine-inner">
     <div style="text-align:center;margin-bottom:32px;">
       <div class="section-label">Strategy Generator</div>
@@ -1020,7 +1037,13 @@
     // Auto-set output language in generator
     const langMap = {'EN':'English','HI':'Hindi','ES':'Spanish','AR':'Arabic','PT':'Portuguese','ID':'Indonesian','FR':'French','DE':'German','JA':'Japanese','KO':'Korean'};
     const sel = document.getElementById('language');
-    if(sel && langMap[code]) sel.value = langMap[code];
+    if(sel && langMap[code]){
+      const t=langMap[code];
+      let found=false;
+      for(let i=0;i<sel.options.length;i++){if(sel.options[i].value===t){sel.selectedIndex=i;found=true;break;}}
+      if(!found){for(let i=0;i<sel.options.length;i++){if(sel.options[i].value.toLowerCase().startsWith(t.toLowerCase().substring(0,4))){sel.selectedIndex=i;break;}}}
+    }
+    localStorage.setItem('vg_lang_code',code);localStorage.setItem('vg_lang_flag',flag);
   }
   document.addEventListener('click', function(e){
     if(!e.target.closest('.lang-wrap')) document.getElementById('lang-dropdown')?.classList.remove('open');
