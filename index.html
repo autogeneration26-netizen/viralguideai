@@ -45,17 +45,7 @@
     .nav-link:hover{color:#fff;background:rgba(255,255,255,0.07)}
     .nav-link-cyan{color:var(--cyan)!important;background:rgba(34,211,238,0.06);border:1px solid rgba(34,211,238,0.2);border-radius:8px}
     .nav-link-cyan:hover{background:rgba(34,211,238,0.12)!important}
-    /* LANGUAGE SELECTOR */
-    .lang-wrap{position:relative}
-    .lang-btn{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);color:rgba(255,255,255,0.8);padding:7px 12px;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.2s;white-space:nowrap}
-    .lang-btn:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.25)}
-    .lang-btn svg{flex-shrink:0;opacity:0.7}
-    .lang-dropdown{position:absolute;top:calc(100% + 8px);right:0;background:#0D1B3E;border:1px solid var(--border);border-radius:12px;padding:6px;min-width:180px;z-index:200;box-shadow:0 16px 40px rgba(0,0,0,0.5);display:none}
-    .lang-dropdown.open{display:block;animation:fadeUp 0.15s ease}
-    .lang-option{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;cursor:pointer;transition:background 0.15s;font-size:0.82rem;color:rgba(255,255,255,0.75);font-weight:500}
-    .lang-option:hover{background:rgba(59,130,246,0.12);color:#fff}
-    .lang-option.active{background:rgba(59,130,246,0.15);color:var(--neon)}
-    .lang-flag{font-size:1rem;line-height:1}
+    
     #auth-btn{background:rgba(255,255,255,0.08);color:#fff;border:1px solid rgba(255,255,255,0.15);padding:8px 16px;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.2s}
     #auth-btn:hover{background:rgba(255,255,255,0.15)}
     .nav-signup{background:linear-gradient(135deg,#1D4ED8,#3B82F6);color:#fff;border:none;padding:9px 20px;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;box-shadow:0 0 18px rgba(59,130,246,0.3)}
@@ -69,7 +59,7 @@
     .mob-nav a{font-size:0.9rem;font-weight:500;color:rgba(255,255,255,0.75);text-decoration:none;padding:10px 14px;border-radius:8px}
     .mob-nav a:hover{background:rgba(255,255,255,0.07);color:#fff}
     .mob-nav .mob-cyan{color:var(--cyan);background:rgba(34,211,238,0.06);border:1px solid rgba(34,211,238,0.2)}
-    @media(max-width:480px){.lang-wrap{display:none}}
+    
 
     /* HERO */
     .hero{text-align:center;padding:80px 6% 64px;max-width:880px;margin:0 auto}
@@ -335,31 +325,11 @@
     <a class="nav-link" href="#pricing">Pricing</a>
   </div>
   <div class="nav-right">
-    <!-- LANGUAGE SELECTOR -->
-    <div class="lang-wrap">
-      <button class="lang-btn" onclick="toggleLang()" id="lang-btn">
-        <span id="lang-flag">🌐</span>
-        <span id="lang-label">EN</span>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><polyline points="6 9 12 15 18 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
-      </button>
-      <div class="lang-dropdown" id="lang-dropdown">
-        <div class="lang-option active" onclick="setLang(this,'EN','🇺🇸','English')"><span class="lang-flag">🇺🇸</span>English</div>
-        <div class="lang-option" onclick="setLang(this,'HI','🇮🇳','हिन्दी')"><span class="lang-flag">🇮🇳</span>हिन्दी</div>
-        <div class="lang-option" onclick="setLang(this,'ES','🇪🇸','Español')"><span class="lang-flag">🇪🇸</span>Español</div>
-        <div class="lang-option" onclick="setLang(this,'AR','🇸🇦','العربية')"><span class="lang-flag">🇸🇦</span>العربية</div>
-        <div class="lang-option" onclick="setLang(this,'PT','🇧🇷','Português')"><span class="lang-flag">🇧🇷</span>Português</div>
-        <div class="lang-option" onclick="setLang(this,'ID','🇮🇩','Bahasa')"><span class="lang-flag">🇮🇩</span>Bahasa Indonesia</div>
-        <div class="lang-option" onclick="setLang(this,'FR','🇫🇷','Français')"><span class="lang-flag">🇫🇷</span>Français</div>
-        <div class="lang-option" onclick="setLang(this,'DE','🇩🇪','Deutsch')"><span class="lang-flag">🇩🇪</span>Deutsch</div>
-        <div class="lang-option" onclick="setLang(this,'JA','🇯🇵','日本語')"><span class="lang-flag">🇯🇵</span>日本語</div>
-        <div class="lang-option" onclick="setLang(this,'KO','🇰🇷','한국어')"><span class="lang-flag">🇰🇷</span>한국어</div>
-      </div>
-    </div>
     <span id="user-email"></span>
     <button id="auth-btn" style="display:none">Sign Out</button>
     <a href="/auth.html" id="nav-get-started" class="nav-signup">Get Started</a>
+    <button class="mob-btn" onclick="document.getElementById('mob-nav').classList.toggle('open')">&#9776;</button>
   </div>
-<button class="mob-btn" onclick="document.getElementById('mob-nav').classList.toggle('open')">&#9776;</button>
 </nav>
 <div class="mob-nav" id="mob-nav">
   <a href="#features" onclick="document.getElementById('mob-nav').classList.remove('open')">Why ViralGuideAI</a>
@@ -948,7 +918,7 @@
     const niche=document.getElementById('niche').value;
     const platform=document.getElementById('platform').value;
     const audience=document.getElementById('audience').value.trim();
-    const language=window._navLang||document.getElementById('language').value;
+    const language=document.getElementById('language').value;
     const duration=document.getElementById('duration').value;
     if(!topic){showError('Please enter your topic or idea.');return;}
     if(!audience){showError('Please describe your target audience.');return;}
@@ -1024,25 +994,7 @@
     document.getElementById('duration').value=el.getAttribute('data-val');
   }
 
-  // LANGUAGE SELECTOR
-  function toggleLang(){
-    document.getElementById('lang-dropdown').classList.toggle('open');
-  }
-  function setLang(el, code, flag, label){
-    document.getElementById('lang-flag').textContent = flag;
-    document.getElementById('lang-label').textContent = code;
-    document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('active'));
-    (el.closest('.lang-option')||el).classList.add('active');
-    document.getElementById('lang-dropdown').classList.remove('open');
-    // Auto-set output language in generator
-    const langMap = {'EN':'English','HI':'Hindi','ES':'Spanish','AR':'Arabic','PT':'Portuguese','ID':'Indonesian','FR':'French','DE':'German','JA':'Japanese','KO':'Korean'};
-    window._navLang = langMap[code]||'English';
-    const sel = document.getElementById('language');
-    if(sel){for(let i=0;i<sel.options.length;i++){if(sel.options[i].value===window._navLang){sel.selectedIndex=i;break;}}}
-  }
-  document.addEventListener('click', function(e){
-    if(!e.target.closest('.lang-wrap')) document.getElementById('lang-dropdown')?.classList.remove('open');
-  });
+  
 
   document.getElementById('copy-btn').addEventListener('click'
 ,()=>{
