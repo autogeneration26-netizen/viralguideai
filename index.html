@@ -72,6 +72,22 @@
     
 
     nav.scrolled{background:rgba(4,9,26,0.98);box-shadow:0 4px 32px rgba(0,0,0,0.5)}
+    /* FEATURES DROPDOWN */
+    .nav-dropdown-wrap{position:relative}
+    .nav-dropdown-btn{background:none;border:none;cursor:pointer;font-family:inherit}
+    .nav-dropdown{position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);background:#0D1B3E;border:1px solid rgba(59,130,246,0.2);border-radius:14px;padding:8px;min-width:240px;z-index:200;box-shadow:0 16px 48px rgba(0,0,0,0.6);opacity:0;pointer-events:none;transform:translateX(-50%) translateY(-8px);transition:opacity 0.2s,transform 0.2s}
+    .nav-dropdown.open{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0)}
+    .nav-dropdown-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;cursor:pointer;transition:background 0.15s;text-decoration:none;border:none;background:none;width:100%}
+    .nav-dropdown-item:hover{background:rgba(59,130,246,0.1)}
+    .nav-dd-icon{width:36px;height:36px;border-radius:8px;background:rgba(59,130,246,0.1);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+    .nav-dd-title{font-size:0.88rem;font-weight:600;color:#fff;margin-bottom:2px}
+    .nav-dd-sub{font-size:0.72rem;color:rgba(255,255,255,0.45);line-height:1.4}
+    /* MOBILE FEATURES SUB */
+    .mob-features-toggle{cursor:pointer;user-select:none}
+    .mob-sub-link{display:block;font-size:0.9rem;font-weight:500;color:rgba(255,255,255,0.55);padding:11px 12px;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:color 0.2s}
+    .mob-sub-link:hover{color:#fff}
+    /* SCROLL OFFSET for sticky nav */
+    html{scroll-padding-top:88px}
     /* HERO */
     .hero{text-align:center;padding:80px 6% 64px;max-width:880px;margin:0 auto}
     .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);color:var(--neon);font-size:0.75rem;font-weight:700;letter-spacing:0.05em;padding:6px 16px;border-radius:99px;margin-bottom:24px;animation:fadeUp 0.6s ease both}
@@ -288,9 +304,9 @@
     .pricing-guarantee{font-size:0.8rem;color:var(--muted);margin-top:12px}
     .credit-counter{background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.2);border-radius:12px;padding:14px 16px;margin:16px 0 4px;text-align:center}
     .credit-counter-popular{background:rgba(59,130,246,0.1);border-color:rgba(59,130,246,0.35)}
-    .credit-num{font-size:2rem;font-weight:800;color:var(--neon);letter-spacing:-0.04em;line-height:1;margin-bottom:4px;text-shadow:0 0 16px rgba(96,165,250,0.3)}
-    .credit-label{font-size:0.75rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px}
-    .credit-sub{font-size:0.68rem;color:var(--muted2)}
+    .credit-num{font-size:2.4rem;font-weight:800;color:var(--neon);letter-spacing:-0.05em;line-height:1;margin-bottom:4px;text-shadow:0 0 20px rgba(96,165,250,0.35)}
+    .credit-label{font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.8);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px}
+    .credit-sub{font-size:0.7rem;color:rgba(255,255,255,0.35);line-height:1.5}
 
 
     /* TREND ALERT SECTION */
@@ -336,9 +352,36 @@
 <nav id="main-nav">
   <a class="nav-logo" href="/">Viral<span>Guide</span>AI</a>
   <div class="nav-center">
-    <a class="nav-link" href="#how">How It Works</a>
-    <a class="nav-link" href="#features">Features</a>
-    <a class="nav-link" href="#pricing">Pricing</a>
+    <a class="nav-link" href="#how" onclick="scrollToSection('how');return false">How It Works</a>
+    <div class="nav-dropdown-wrap" id="features-dropdown-wrap">
+      <button class="nav-link nav-dropdown-btn" onclick="toggleFeaturesDropdown()" id="features-btn">
+        Features <span id="features-chevron" style="font-size:0.65rem;margin-left:3px;transition:transform 0.2s;display:inline-block">▾</span>
+      </button>
+      <div class="nav-dropdown" id="features-dropdown">
+        <a class="nav-dropdown-item" onclick="scrollToSection('generator');closeDropdown()" href="#">
+          <div class="nav-dd-icon">⚡</div>
+          <div>
+            <div class="nav-dd-title">Strategy Generator</div>
+            <div class="nav-dd-sub">Generate viral content in 10 seconds</div>
+          </div>
+        </a>
+        <a class="nav-dropdown-item" onclick="scrollToSection('trend-alert');closeDropdown()" href="#">
+          <div class="nav-dd-icon">🔔</div>
+          <div>
+            <div class="nav-dd-title">Trend Alert</div>
+            <div class="nav-dd-sub">Daily viral trends in your niche</div>
+          </div>
+        </a>
+        <a class="nav-dropdown-item" onclick="scrollToSection('collab');closeDropdown()" href="#">
+          <div class="nav-dd-icon">🤝</div>
+          <div>
+            <div class="nav-dd-title">Creator Collaboration</div>
+            <div class="nav-dd-sub">Connect with creators worldwide</div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <a class="nav-link" href="#pricing" onclick="scrollToSection('pricing');return false">Pricing</a>
   </div>
   <div class="nav-right">
     <span id="user-email"></span>
@@ -351,12 +394,19 @@
   </div>
 </nav>
 <div class="mob-nav" id="mob-nav">
-  <a class="mob-nav-cta" href="/auth.html" onclick="document.getElementById('mob-nav').classList.remove('open')">⚡ Generate My Strategy</a>
+  <a class="mob-nav-cta" href="/auth.html" onclick="closeMobNav()">⚡ Generate My Strategy</a>
   <div class="mob-nav-micro">Free · No card needed</div>
   <div class="mob-nav-divider"></div>
-  <a class="mob-link" href="#how" onclick="closeMobNav()">How It Works</a>
-  <a class="mob-link" href="#features" onclick="closeMobNav()">Features</a>
-  <a class="mob-link" href="#pricing" onclick="closeMobNav()">Pricing</a>
+  <a class="mob-link" href="#how" onclick="scrollToSection('how');closeMobNav()">How It Works</a>
+  <div class="mob-link mob-features-toggle" onclick="toggleMobFeatures()">
+    Features <span id="mob-features-arrow" style="float:right;font-size:0.75rem;transition:transform 0.2s;display:inline-block">▾</span>
+  </div>
+  <div id="mob-features-sub" style="display:none;padding-left:16px;background:rgba(255,255,255,0.02);border-left:2px solid rgba(59,130,246,0.3);margin-left:4px">
+    <a class="mob-sub-link" onclick="scrollToSection('generator');closeMobNav()">⚡ Strategy Generator</a>
+    <a class="mob-sub-link" onclick="scrollToSection('trend-alert');closeMobNav()">🔔 Trend Alert</a>
+    <a class="mob-sub-link" onclick="scrollToSection('collab');closeMobNav()">🤝 Creator Collaboration</a>
+  </div>
+  <a class="mob-link" onclick="scrollToSection('pricing');closeMobNav()">Pricing</a>
   <div class="mob-nav-login" id="mob-nav-login">
     <button id="mob-auth-btn" onclick="mobilAuth()">Sign In / Sign Out</button>
   </div>
@@ -722,7 +772,7 @@
 </section>
 
 <!-- TREND SUBSCRIBE MINI (before pricing) -->
-<div style="background:rgba(59,130,246,0.06);border-top:1px solid rgba(59,130,246,0.15);border-bottom:1px solid rgba(59,130,246,0.15);padding:32px 6%;text-align:center">
+<div id="trend-alert" style="background:rgba(59,130,246,0.06);border-top:1px solid rgba(59,130,246,0.15);border-bottom:1px solid rgba(59,130,246,0.15);padding:32px 6%;text-align:center">
   <div style="max-width:580px;margin:0 auto">
     <div style="font-size:0.82rem;font-weight:700;color:var(--cyan);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.08em">🔔 Daily Trend Alert</div>
     <p style="font-size:1rem;color:#fff;font-weight:600;margin-bottom:16px">Get tomorrow's viral trends tonight — included in all paid plans</p>
@@ -741,7 +791,7 @@
     <p style="font-size:0.92rem;color:var(--muted);background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.15);border-radius:10px;padding:12px 20px;display:inline-block">💡 A freelance strategist costs <strong style="color:#fff">$50–200/hour</strong>. Get unlimited AI strategies from <strong style="color:var(--neon)">$10/month.</strong></p>
   </div>
   <h2 class="pricing-title">Start free. Grow at your own pace.</h2>
-  <p class="pricing-sub">No credit card for Free plan · Cancel anytime · Unused credits carry over monthly</p>
+  <p class="pricing-sub">No card needed to start · Cancel anytime · Unused credits carry forward</p>
   <div class="pricing-grid">
 
     <!-- FREE -->
@@ -771,11 +821,11 @@
     <div class="plan-card">
       <div class="plan-tier">Get Starter</div>
       <div class="plan-price-row"><div class="plan-price">$10</div><div class="plan-price-period">/ month</div></div>
-      <p class="plan-tagline">100 credits = 3–4 posts/day, all month</p>
+      <p class="plan-tagline">Use at your own pace · No daily limits</p>
       <div class="credit-counter">
         <div class="credit-num">100</div>
         <div class="credit-label">AI Strategy Credits / month</div>
-        <div class="credit-sub">1 credit = 1 complete viral strategy</div>
+        <div class="credit-sub">1 credit = 1 complete AI strategy · Use anytime</div>
       </div>
       <hr class="plan-divider" />
       <ul class="plan-features">
@@ -795,11 +845,11 @@
       <div class="popular-badge">Most Popular</div>
       <div class="plan-tier">Get Pro</div>
       <div class="plan-price-row"><div class="plan-price">$20</div><div class="plan-price-period">/ month</div></div>
-      <p class="plan-tagline">Most popular · Best for daily creators · 200 credits = 6–7 posts/day</p>
+      <p class="plan-tagline">Most popular · Best for serious creators</p>
       <div class="credit-counter credit-counter-popular">
         <div class="credit-num">200</div>
         <div class="credit-label">AI Strategy Credits / month</div>
-        <div class="credit-sub">1 credit = 1 complete viral strategy</div>
+        <div class="credit-sub">1 credit = 1 complete AI strategy · Use anytime</div>
       </div>
       <hr class="plan-divider" />
       <ul class="plan-features">
@@ -818,11 +868,11 @@
     <div class="plan-card">
       <div class="plan-tier">Get Growth</div>
       <div class="plan-price-row"><div class="plan-price">$30</div><div class="plan-price-period">/ month</div></div>
-      <p class="plan-tagline">300+ credits = unlimited daily posting</p>
+      <p class="plan-tagline">For power creators &amp; agencies worldwide</p>
       <div class="credit-counter">
         <div class="credit-num">300+</div>
         <div class="credit-label">AI Strategy Credits / month</div>
-        <div class="credit-sub">1 credit = 1 complete viral strategy</div>
+        <div class="credit-sub">1 credit = 1 complete AI strategy · Use anytime</div>
       </div>
       <hr class="plan-divider" />
       <ul class="plan-features">
@@ -844,7 +894,7 @@
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:16px 18px;text-align:center">
       <div style="font-size:1.2rem;margin-bottom:8px">↩️</div>
       <div style="font-size:0.82rem;font-weight:700;color:#fff;margin-bottom:4px">Unused credits?</div>
-      <div style="font-size:0.78rem;color:var(--muted)">They carry forward to next month automatically</div>
+      <div style="font-size:0.78rem;color:var(--muted)">Unused credits carry forward automatically — never lose what you paid for</div>
     </div>
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:16px 18px;text-align:center">
       <div style="font-size:1.2rem;margin-bottom:8px">✋</div>
@@ -1281,6 +1331,76 @@
       }
     }catch(e){console.error(e);}
   }
+
+
+  // FEATURES DROPDOWN
+  function toggleFeaturesDropdown(){
+    const dd = document.getElementById('features-dropdown');
+    const chevron = document.getElementById('features-chevron');
+    if(!dd) return;
+    const isOpen = dd.classList.toggle('open');
+    if(chevron) chevron.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+  }
+  function closeDropdown(){
+    const dd = document.getElementById('features-dropdown');
+    const chevron = document.getElementById('features-chevron');
+    if(dd) dd.classList.remove('open');
+    if(chevron) chevron.style.transform = 'rotate(0deg)';
+  }
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(e){
+    const wrap = document.getElementById('features-dropdown-wrap');
+    if(wrap && !wrap.contains(e.target)) closeDropdown();
+  });
+
+  // MOBILE FEATURES SUBMENU
+  function toggleMobFeatures(){
+    const sub = document.getElementById('mob-features-sub');
+    const arrow = document.getElementById('mob-features-arrow');
+    if(!sub) return;
+    const isOpen = sub.style.display === 'none' || !sub.style.display;
+    sub.style.display = isOpen ? 'block' : 'none';
+    if(arrow) arrow.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+  }
+
+  // SMOOTH SCROLL WITH NAV OFFSET
+  function scrollToSection(id){
+    const el = document.getElementById(id);
+    if(!el) return;
+    const navH = 88;
+    const top = el.getBoundingClientRect().top + window.scrollY - navH;
+    window.scrollTo({top, behavior:'smooth'});
+  }
+
+  // ACTIVE NAV HIGHLIGHT - update to include features sections
+  const allNavSections = [
+    {id:'how', type:'link', selector:'.nav-link[href="#how"]'},
+    {id:'features', type:'link', selector:'.nav-link[href="#features"]'},
+    {id:'pricing', type:'link', selector:'.nav-link[href="#pricing"]'},
+    {id:'generator', type:'dropdown'},
+    {id:'trend-alert', type:'dropdown'},
+    {id:'collab', type:'dropdown'},
+  ];
+  window.addEventListener('scroll', function(){
+    const scrollY = window.scrollY + 120;
+    let activeDropdown = false;
+    allNavSections.forEach(s=>{
+      const el = document.getElementById(s.id);
+      if(!el) return;
+      const top = el.offsetTop;
+      const bottom = top + el.offsetHeight;
+      const isActive = scrollY >= top && scrollY < bottom;
+      if(s.type === 'link'){
+        const link = document.querySelector(s.selector);
+        if(link) link.classList.toggle('active', isActive);
+      } else if(s.type === 'dropdown' && isActive){
+        activeDropdown = true;
+      }
+    });
+    // Highlight Features btn when in any feature section
+    const featBtn = document.getElementById('features-btn');
+    if(featBtn) featBtn.classList.toggle('active', activeDropdown);
+  });
 
   // NAV SCROLL EFFECT
   window.addEventListener('scroll',function(){
