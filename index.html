@@ -67,7 +67,7 @@
     .mob-nav{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(4,9,26,0.97);backdrop-filter:blur(24px);border-bottom:1px solid rgba(59,130,246,0.2);padding:12px 6%;z-index:99;flex-direction:column;gap:4px}
     .mob-nav.open{display:flex}
     .mob-nav a{font-size:0.9rem;font-weight:500;color:rgba(255,255,255,0.75);text-decoration:none;padding:10px 14px;border-radius:8px}
-    .mob-nav a:hover,.mob-nav a:active{background:rgba(255,255,255,0.07);color:#fff}
+    .mob-nav a:hover{background:rgba(255,255,255,0.07);color:#fff}
     .mob-nav .mob-cyan{color:var(--cyan);background:rgba(34,211,238,0.06);border:1px solid rgba(34,211,238,0.2)}
     @media(max-width:480px){.lang-wrap{display:none}}
 
@@ -364,9 +364,9 @@
 <div class="mob-nav" id="mob-nav">
   <a href="#features" onclick="document.getElementById('mob-nav').classList.remove('open')">Why ViralGuideAI</a>
   <a href="#how" onclick="document.getElementById('mob-nav').classList.remove('open')">How It Works</a>
-  <a class="mob-cyan" href="#trend-alert" onclick="document.getElementById('mob-nav').classList.remove('open')">&#128276; Trend Alert</a>
+  <a class="mob-cyan" href="#trend-alert" onclick="document.getElementById('mob-nav').classList.remove('open')">🔔 Trend Alert</a>
   <a href="#collab" onclick="document.getElementById('mob-nav').classList.remove('open')">Creator Network</a>
-  <a href="#generator" onclick="document.getElementById('mob-nav').classList.remove('open')">&#9889; Strategy Generator</a>
+  <a href="#generator" onclick="document.getElementById('mob-nav').classList.remove('open')">⚡ Strategy Generator</a>
   <a href="#pricing" onclick="document.getElementById('mob-nav').classList.remove('open')">Pricing</a>
 </div>
 
@@ -948,7 +948,7 @@
     const niche=document.getElementById('niche').value;
     const platform=document.getElementById('platform').value;
     const audience=document.getElementById('audience').value.trim();
-    const language=document.getElementById('language').value;
+    const language=window._navLang||document.getElementById('language').value;
     const duration=document.getElementById('duration').value;
     if(!topic){showError('Please enter your topic or idea.');return;}
     if(!audience){showError('Please describe your target audience.');return;}
@@ -1032,18 +1032,13 @@
     document.getElementById('lang-flag').textContent = flag;
     document.getElementById('lang-label').textContent = code;
     document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('active'));
-    (el.closest?el.closest('.lang-option'):el).classList.add('active');
+    (el.closest('.lang-option')||el).classList.add('active');
     document.getElementById('lang-dropdown').classList.remove('open');
     // Auto-set output language in generator
     const langMap = {'EN':'English','HI':'Hindi','ES':'Spanish','AR':'Arabic','PT':'Portuguese','ID':'Indonesian','FR':'French','DE':'German','JA':'Japanese','KO':'Korean'};
+    window._navLang = langMap[code]||'English';
     const sel = document.getElementById('language');
-    if(sel && langMap[code]){
-      const t=langMap[code];
-      let found=false;
-      for(let i=0;i<sel.options.length;i++){if(sel.options[i].value===t){sel.selectedIndex=i;found=true;break;}}
-      if(!found){for(let i=0;i<sel.options.length;i++){if(sel.options[i].value.toLowerCase().startsWith(t.toLowerCase().substring(0,4))){sel.selectedIndex=i;break;}}}
-    }
-    localStorage.setItem('vg_lang_code',code);localStorage.setItem('vg_lang_flag',flag);
+    if(sel){for(let i=0;i<sel.options.length;i++){if(sel.options[i].value===window._navLang){sel.selectedIndex=i;break;}}}
   }
   document.addEventListener('click', function(e){
     if(!e.target.closest('.lang-wrap')) document.getElementById('lang-dropdown')?.classList.remove('open');
