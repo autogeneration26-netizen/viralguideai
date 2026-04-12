@@ -495,8 +495,12 @@
       <!-- HOOK + VIRAL SCORE DOMINANT TOP ROW -->
       <div style="display:grid;grid-template-columns:1fr auto;gap:12px;margin-bottom:12px;align-items:stretch">
         <div class="s-card" style="background:linear-gradient(135deg,rgba(59,130,246,0.12),rgba(34,211,238,0.06));border-color:rgba(59,130,246,0.3)">
-          <div class="s-card-header"><div class="s-card-icon" style="background:rgba(59,130,246,0.12)">🎣</div><div class="s-card-title" style="font-size:0.75rem;font-weight:800;color:var(--neon)">Hook</div></div>
-          <div class="s-card-body" style="font-size:1rem;color:#fff;font-weight:500;line-height:1.6">"I drank this every morning for 30 days — my doctor was shocked by my bloodwork." Cut to close-up of the drink being made. No talking for the first 2 seconds — just the sound of pouring.</div>
+          <div class="s-card-header"><div class="s-card-icon" style="background:rgba(59,130,246,0.12)">🎣</div><div class="s-card-title" style="font-size:0.75rem;font-weight:800;color:var(--neon)">Hook Variations (3)</div></div>
+          <div class="s-card-body">
+            <div style="border-left:3px solid #3B9EFF;padding:8px 12px;margin-bottom:8px;border-radius:0 8px 8px 0;background:rgba(59,130,246,0.06)"><div style="font-size:0.65rem;font-weight:700;color:#3B9EFF;margin-bottom:4px">CURIOSITY</div><div style="font-size:0.85rem;color:#fff">"I drank this every morning for 30 days — my doctor was shocked by my bloodwork."</div></div>
+            <div style="border-left:3px solid #10B981;padding:8px 12px;margin-bottom:8px;border-radius:0 8px 8px 0;background:rgba(16,185,129,0.06)"><div style="font-size:0.65rem;font-weight:700;color:#10B981;margin-bottom:4px">PAIN + SOLUTION</div><div style="font-size:0.85rem;color:#fff">"Stop spending ₹3,000 on supplements — this ₹30 morning drink does more."</div></div>
+            <div style="border-left:3px solid #A78BFA;padding:8px 12px;border-radius:0 8px 8px 0;background:rgba(167,139,250,0.06)"><div style="font-size:0.65rem;font-weight:700;color:#A78BFA;margin-bottom:4px">BOLD CLAIM</div><div style="font-size:0.85rem;color:#fff">"Gyms don't want you to know this. One drink is doing what 6 months of protein powder failed to do."</div></div>
+          </div>
         </div>
         <div class="s-card" style="background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.25);min-width:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
           <div style="font-size:0.65rem;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">Viral Score</div>
@@ -766,8 +770,8 @@
       <div class="collab-card"><div class="collab-card-icon">🏢</div><div class="collab-card-title">Brand × Creator Deals</div><div class="collab-card-desc">Brands discover and reach out to creators directly. No agency fee. No middleman. You keep 100% of what you negotiate.</div></div>
       <div class="collab-card"><div class="collab-card-icon">🌍</div><div class="collab-card-title">Worldwide Directory</div><div class="collab-card-desc">Creators from India, USA, SEA, MENA, Europe and LATAM. The most diverse creator collaboration network available.</div></div>
     </div>
-    <a href="collabs.html" class="collab-btn">🔍 Browse Creator Directory</a>
-    <p class="collab-note">Collaboration available on Get Pro &amp; Get Growth · Trend Alerts on all paid plans · See <a href="terms.html" style="color:rgba(255,255,255,0.5)">Terms</a></p>
+    <a href="collabs.html" class="collab-btn">🔔 Join Early Access Waitlist</a>
+    <p class="collab-note">Creator Directory launching soon · Early access for Get Pro &amp; Get Growth · <a href="terms.html" style="color:rgba(255,255,255,0.5)">Terms</a></p>
   </div>
 </section>
 
@@ -859,7 +863,7 @@
         <li><span class="feat-check">✓</span>Trending angle + viral score</li>
         <li><span class="feat-check">✓</span>Monetization strategy</li>
         <li><span class="feat-check">✓</span><strong style="color:#22D3EE">Daily Trend Alert emails</strong></li>
-        <li><span class="feat-check">✓</span>Collaboration directory</li>
+        <li><span class="feat-check">✓</span><span style="color:#FCD34D">⏳ Creator Directory — Early Access</span></li>
       </ul>
       <button class="plan-cta plan-cta-filled" onclick="openPaddleCheckout('pro')" style="font-size:0.95rem">Start for $20 →</button>
     </div>
@@ -882,8 +886,8 @@
         <li><span class="feat-check">✓</span>Trending angle + viral score</li>
         <li><span class="feat-check">✓</span>Monetization strategy</li>
         <li><span class="feat-check">✓</span><strong style="color:#22D3EE">Daily Trend Alert emails</strong></li>
-        <li><span class="feat-check">✓</span>Collaboration directory</li>
-        <li><span class="feat-check">✓</span>Early access + priority support</li>
+        <li><span class="feat-check">✓</span><span style="color:#FCD34D">⏳ Creator Directory — Early Access</span></li>
+        <li><span class="feat-check">✓</span>Priority support + first to launch</li>
       </ul>
       <button class="plan-cta plan-cta-outline" onclick="openPaddleCheckout('growth')" style="font-size:0.95rem">Start for $30 →</button>
     </div>
@@ -1044,7 +1048,8 @@
     grid.innerHTML='';
     const sections=[
       {key:'TRENDING ANGLE',emoji:'🎯',bg:'rgba(59,130,246,0.12)',label:'Trending Angle',full:true,trending:true},
-      {key:'HOOK',emoji:'🎣',bg:'rgba(59,130,246,0.1)',label:'Hook',full:false,trending:false},
+      {key:'HOOK VARIATIONS',emoji:'🎣',bg:'rgba(59,130,246,0.1)',label:'Hook Variations',full:true,trending:false,hooks:true},
+      {key:'BEST HOOK',emoji:'⭐',bg:'rgba(251,191,36,0.12)',label:'Best Hook — Recommended',full:true,trending:false,bestHook:true},
       {key:'SCRIPT',emoji:'📜',bg:'rgba(16,185,129,0.1)',label:'Script',full:false,trending:false},
       {key:'CAPTION',emoji:'✍️',bg:'rgba(251,146,60,0.1)',label:'Caption',full:false,trending:false},
       {key:'HASHTAGS',emoji:'#️⃣',bg:'rgba(124,58,237,0.1)',label:'Hashtags',full:false,trending:false},
@@ -1066,7 +1071,38 @@
       card.innerHTML=`<div class="r-card-header"><div class="r-card-icon" style="background:${sec.bg}">${sec.emoji}</div><div class="r-card-title">${sec.label}</div></div>`;
       const body=document.createElement('div');
       body.className='r-card-body';
-      if(sec.key==='HASHTAGS'){
+      if(sec.key==='HOOK VARIATIONS'){
+        // Parse 3 hooks
+        const lines = raw.split('\n');
+        let html = '<div style="display:flex;flex-direction:column;gap:14px">';
+        const hookColors = ['#3B9EFF','#10B981','#A78BFA'];
+        const hookLabels = ['HOOK 01 — CURIOSITY','HOOK 02 — PAIN + SOLUTION','HOOK 03 — BOLD CLAIM'];
+        let hookIdx = 0; let currentHook = ''; let currentPattern = '';
+        lines.forEach(line=>{
+          const upper = line.toUpperCase();
+          if(hookLabels.some(h=>upper.includes(h.split('—')[0].trim()))){
+            if(currentHook && hookIdx > 0){
+              html += `<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid ${hookColors[hookIdx-1]};border-radius:10px;padding:14px 16px"><div style="font-size:0.65rem;font-weight:700;color:${hookColors[hookIdx-1]};text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">${hookLabels[hookIdx-1]}</div><div style="font-size:0.9rem;color:#fff;font-weight:500;line-height:1.6;margin-bottom:${currentPattern?'6px':'0'}">${currentHook}</div>${currentPattern?`<div style="font-size:0.72rem;color:rgba(255,255,255,0.4);font-style:italic">${currentPattern}</div>`:''}</div>`;
+            }
+            hookIdx++; currentHook=''; currentPattern='';
+          } else if(line.toLowerCase().startsWith('pattern type:')){
+            currentPattern = line;
+          } else if(line.trim() && !upper.includes('HOOK VARIATIONS')){
+            currentHook += (currentHook?' ':'')+line.trim();
+          }
+        });
+        if(currentHook && hookIdx > 0){
+          html += `<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid ${hookColors[Math.min(hookIdx-1,2)]};border-radius:10px;padding:14px 16px"><div style="font-size:0.65rem;font-weight:700;color:${hookColors[Math.min(hookIdx-1,2)]};text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">${hookLabels[Math.min(hookIdx-1,2)]}</div><div style="font-size:0.9rem;color:#fff;font-weight:500;line-height:1.6;margin-bottom:${currentPattern?'6px':'0'}">${currentHook}</div>${currentPattern?`<div style="font-size:0.72rem;color:rgba(255,255,255,0.4);font-style:italic">${currentPattern}</div>`:''}</div>`;
+        }
+        html += '</div>';
+        if(html === '<div style="display:flex;flex-direction:column;gap:14px"></div>'){
+          body.innerHTML = raw.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+        } else {
+          body.innerHTML = html;
+        }
+      } else if(sec.key==='BEST HOOK'){
+        body.innerHTML = `<div style="background:rgba(251,191,36,0.06);border-radius:10px;padding:16px;font-size:1rem;color:#fff;font-weight:600;line-height:1.6;border-left:3px solid #FCD34D">${raw.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')}</div>`;
+      } else if(sec.key==='HASHTAGS'){
         const tags=raw.split(/\s+/).filter(w=>w.startsWith('#'));
         body.innerHTML=(tags.length?tags:raw.split(/\s+/).map(w=>'#'+w.replace(/[^a-zA-Z0-9]/g,''))).map(t=>`<span class="r-hashtag">${t}</span>`).join('');
       }else if(sec.key==='VIRAL SCORE'){
@@ -1238,7 +1274,7 @@
   // RESULT TABS
   let currentTab = 'hook';
   const tabSections = {
-    hook: ['TRENDING ANGLE','HOOK','SCRIPT'],
+    hook: ['TRENDING ANGLE','HOOK VARIATIONS','BEST HOOK','SCRIPT'],
     caption: ['CAPTION','HASHTAGS'],
     score: ['VIRAL SCORE','MONETIZATION STRATEGY']
   };
@@ -1262,7 +1298,8 @@
     grid.innerHTML='';
     const sections=[
       {key:'TRENDING ANGLE',emoji:'🎯',bg:'rgba(59,130,246,0.12)',label:'Trending Angle',full:true,trending:true},
-      {key:'HOOK',emoji:'🎣',bg:'rgba(59,130,246,0.1)',label:'Hook',full:false,trending:false},
+      {key:'HOOK VARIATIONS',emoji:'🎣',bg:'rgba(59,130,246,0.1)',label:'Hook Variations',full:true,trending:false,hooks:true},
+      {key:'BEST HOOK',emoji:'⭐',bg:'rgba(251,191,36,0.12)',label:'Best Hook — Recommended',full:true,trending:false,bestHook:true},
       {key:'SCRIPT',emoji:'📜',bg:'rgba(16,185,129,0.1)',label:'Script',full:false,trending:false},
       {key:'CAPTION',emoji:'✍️',bg:'rgba(251,146,60,0.1)',label:'Caption',full:false,trending:false},
       {key:'HASHTAGS',emoji:'#️⃣',bg:'rgba(124,58,237,0.1)',label:'Hashtags',full:false,trending:false},
@@ -1285,7 +1322,38 @@
       card.innerHTML=`<div class="r-card-header"><div class="r-card-icon" style="background:${sec.bg}">${sec.emoji}</div><div class="r-card-title">${sec.label}</div></div>`;
       const body=document.createElement('div');
       body.className='r-card-body';
-      if(sec.key==='HASHTAGS'){
+      if(sec.key==='HOOK VARIATIONS'){
+        // Parse 3 hooks
+        const lines = raw.split('\n');
+        let html = '<div style="display:flex;flex-direction:column;gap:14px">';
+        const hookColors = ['#3B9EFF','#10B981','#A78BFA'];
+        const hookLabels = ['HOOK 01 — CURIOSITY','HOOK 02 — PAIN + SOLUTION','HOOK 03 — BOLD CLAIM'];
+        let hookIdx = 0; let currentHook = ''; let currentPattern = '';
+        lines.forEach(line=>{
+          const upper = line.toUpperCase();
+          if(hookLabels.some(h=>upper.includes(h.split('—')[0].trim()))){
+            if(currentHook && hookIdx > 0){
+              html += `<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid ${hookColors[hookIdx-1]};border-radius:10px;padding:14px 16px"><div style="font-size:0.65rem;font-weight:700;color:${hookColors[hookIdx-1]};text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">${hookLabels[hookIdx-1]}</div><div style="font-size:0.9rem;color:#fff;font-weight:500;line-height:1.6;margin-bottom:${currentPattern?'6px':'0'}">${currentHook}</div>${currentPattern?`<div style="font-size:0.72rem;color:rgba(255,255,255,0.4);font-style:italic">${currentPattern}</div>`:''}</div>`;
+            }
+            hookIdx++; currentHook=''; currentPattern='';
+          } else if(line.toLowerCase().startsWith('pattern type:')){
+            currentPattern = line;
+          } else if(line.trim() && !upper.includes('HOOK VARIATIONS')){
+            currentHook += (currentHook?' ':'')+line.trim();
+          }
+        });
+        if(currentHook && hookIdx > 0){
+          html += `<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid ${hookColors[Math.min(hookIdx-1,2)]};border-radius:10px;padding:14px 16px"><div style="font-size:0.65rem;font-weight:700;color:${hookColors[Math.min(hookIdx-1,2)]};text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">${hookLabels[Math.min(hookIdx-1,2)]}</div><div style="font-size:0.9rem;color:#fff;font-weight:500;line-height:1.6;margin-bottom:${currentPattern?'6px':'0'}">${currentHook}</div>${currentPattern?`<div style="font-size:0.72rem;color:rgba(255,255,255,0.4);font-style:italic">${currentPattern}</div>`:''}</div>`;
+        }
+        html += '</div>';
+        if(html === '<div style="display:flex;flex-direction:column;gap:14px"></div>'){
+          body.innerHTML = raw.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+        } else {
+          body.innerHTML = html;
+        }
+      } else if(sec.key==='BEST HOOK'){
+        body.innerHTML = `<div style="background:rgba(251,191,36,0.06);border-radius:10px;padding:16px;font-size:1rem;color:#fff;font-weight:600;line-height:1.6;border-left:3px solid #FCD34D">${raw.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')}</div>`;
+      } else if(sec.key==='HASHTAGS'){
         const tags=raw.split(/\s+/).filter(w=>w.startsWith('#'));
         body.innerHTML=(tags.length?tags:raw.split(/\s+/).map(w=>'#'+w.replace(/[^a-zA-Z0-9]/g,''))).map(t=>`<span class="r-hashtag">${t}</span>`).join('');
       }else if(sec.key==='VIRAL SCORE'){
