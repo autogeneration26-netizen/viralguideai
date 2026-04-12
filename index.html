@@ -748,8 +748,13 @@
             <option>Instagram Reels</option>
             <option>YouTube Shorts</option>
             <option>TikTok</option>
-            <option>LinkedIn</option>
+            <option>YouTube</option>
+            <option>Instagram Feed</option>
             <option>Twitter / X</option>
+            <option>LinkedIn</option>
+            <option>Facebook</option>
+            <option>Pinterest</option>
+            <option>Podcast</option>
           </select>
         </div>
         <div style="margin-bottom:20px">
@@ -941,8 +946,12 @@
     currentSession=session;
     const signoutBtn=document.getElementById('auth-btn');
     const getStartedBtn=document.getElementById('nav-get-started');
-    if(session?.user){document.getElementById('user-email').textContent=session.user.email;signoutBtn.style.display='inline-block';getStartedBtn.style.display='none';}
-    else{document.getElementById('user-email').textContent='';signoutBtn.style.display='none';getStartedBtn.style.display='inline-block';}
+    const emailEl=document.getElementById('user-email');
+    if(session?.user){
+      emailEl.innerHTML=`<a href="/profile.html" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.75rem;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block" title="${session.user.email}">${session.user.email}</a>`;
+      signoutBtn.style.display='inline-block';getStartedBtn.style.display='none';
+    }
+    else{emailEl.innerHTML='';signoutBtn.style.display='none';getStartedBtn.style.display='inline-block';}
   }
 
   sb.auth.getSession().then(({data:{session}})=>updateUI(session));
