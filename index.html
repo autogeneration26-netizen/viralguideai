@@ -335,16 +335,16 @@
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><polyline points="6 9 12 15 18 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
       </button>
       <div class="lang-dropdown" id="lang-dropdown">
-        <div class="lang-option active" onclick="setLang('EN','🇺🇸','English')"><span class="lang-flag">🇺🇸</span>English</div>
-        <div class="lang-option" onclick="setLang('HI','🇮🇳','हिन्दी')"><span class="lang-flag">🇮🇳</span>हिन्दी</div>
-        <div class="lang-option" onclick="setLang('ES','🇪🇸','Español')"><span class="lang-flag">🇪🇸</span>Español</div>
-        <div class="lang-option" onclick="setLang('AR','🇸🇦','العربية')"><span class="lang-flag">🇸🇦</span>العربية</div>
-        <div class="lang-option" onclick="setLang('PT','🇧🇷','Português')"><span class="lang-flag">🇧🇷</span>Português</div>
-        <div class="lang-option" onclick="setLang('ID','🇮🇩','Bahasa')"><span class="lang-flag">🇮🇩</span>Bahasa Indonesia</div>
-        <div class="lang-option" onclick="setLang('FR','🇫🇷','Français')"><span class="lang-flag">🇫🇷</span>Français</div>
-        <div class="lang-option" onclick="setLang('DE','🇩🇪','Deutsch')"><span class="lang-flag">🇩🇪</span>Deutsch</div>
-        <div class="lang-option" onclick="setLang('JA','🇯🇵','日本語')"><span class="lang-flag">🇯🇵</span>日本語</div>
-        <div class="lang-option" onclick="setLang('KO','🇰🇷','한국어')"><span class="lang-flag">🇰🇷</span>한국어</div>
+        <div class="lang-option active" onclick="setLang(this,'EN','🇺🇸','English')"><span class="lang-flag">🇺🇸</span>English</div>
+        <div class="lang-option" onclick="setLang(this,'HI','🇮🇳','हिन्दी')"><span class="lang-flag">🇮🇳</span>हिन्दी</div>
+        <div class="lang-option" onclick="setLang(this,'ES','🇪🇸','Español')"><span class="lang-flag">🇪🇸</span>Español</div>
+        <div class="lang-option" onclick="setLang(this,'AR','🇸🇦','العربية')"><span class="lang-flag">🇸🇦</span>العربية</div>
+        <div class="lang-option" onclick="setLang(this,'PT','🇧🇷','Português')"><span class="lang-flag">🇧🇷</span>Português</div>
+        <div class="lang-option" onclick="setLang(this,'ID','🇮🇩','Bahasa')"><span class="lang-flag">🇮🇩</span>Bahasa Indonesia</div>
+        <div class="lang-option" onclick="setLang(this,'FR','🇫🇷','Français')"><span class="lang-flag">🇫🇷</span>Français</div>
+        <div class="lang-option" onclick="setLang(this,'DE','🇩🇪','Deutsch')"><span class="lang-flag">🇩🇪</span>Deutsch</div>
+        <div class="lang-option" onclick="setLang(this,'JA','🇯🇵','日本語')"><span class="lang-flag">🇯🇵</span>日本語</div>
+        <div class="lang-option" onclick="setLang(this,'KO','🇰🇷','한국어')"><span class="lang-flag">🇰🇷</span>한국어</div>
       </div>
     </div>
     <span id="user-email"></span>
@@ -880,10 +880,27 @@
 
   function openPaddleCheckout(plan){
     if(!currentSession){ window.location.href='/auth.html'; return; }
-    if(typeof Paddle === 'undefined'){ alert('Payment system loading. Please refresh and try again.'); return; }
+    if(typeof Paddle === 'undefined'){
+      showPaddleError();return;
+    }
     const opts={items:[{priceId:PADDLE_PRICE_IDS[plan],quantity:1}]};
     if(currentSession?.user?.email)opts.customer={email:currentSession.user.email};
-    Paddle.Checkout.open(opts);
+    try{ Paddle.Checkout.open(opts); }
+    catch(e){ showPaddleError(); }
+  }
+
+  function showPaddleError(){
+    const el = document.createElement('div');
+    el.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:9999;backdrop-filter:blur(8px)';
+    el.innerHTML=`<div style="background:#0D1B3E;border:1px solid rgba(59,130,246,0.3);border-radius:20px;padding:40px 36px;max-width:420px;text-align:center;box-shadow:0 0 60px rgba(59,130,246,0.15)">
+      <div style="font-size:2.5rem;margin-bottom:16px">🔧</div>
+      <h3 style="font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:10px;letter-spacing:-0.02em">Payments launching soon</h3>
+      <p style="font-size:0.88rem;color:#94A3B8;margin-bottom:24px;line-height:1.7">We're finalising our payment setup. In the meantime, use the <strong style="color:#60A5FA">Free plan</strong> — 10 strategies/month, no card needed.</p>
+      <a href="/auth.html" style="display:block;background:linear-gradient(135deg,#1D4ED8,#3B82F6);color:#fff;padding:12px 28px;border-radius:10px;text-decoration:none;font-weight:700;font-size:0.9rem;margin-bottom:12px;box-shadow:0 0 20px rgba(59,130,246,0.3)">Start Free →</a>
+      <button onclick="this.closest('div').parentElement.remove()" style="background:transparent;border:none;color:#475569;font-size:0.82rem;cursor:pointer;padding:8px">Dismiss</button>
+    </div>`;
+    document.body.appendChild(el);
+    el.addEventListener('click',function(e){if(e.target===el)el.remove();});
   }
 
   const{createClient}=supabase;
@@ -898,8 +915,8 @@
     else{document.getElementById('user-email').textContent='';signoutBtn.style.display='none';getStartedBtn.style.display='inline-block';}
   }
 
-  sb.auth.getSession().then(({data:{session}})=>updateUI(session));
-  sb.auth.onAuthStateChange((_e,session)=>updateUI(session));
+  sb.auth.getSession().then(({data:{session}})=>{updateUI(session);if(session)currentSession=session;});
+  sb.auth.onAuthStateChange((_e,session)=>{updateUI(session);if(session)currentSession=session;});
 
   document.getElementById('auth-btn').addEventListener('click',async()=>{
     if(currentSession){await sb.auth.signOut();}
@@ -907,6 +924,8 @@
   });
 
   document.getElementById('generate-btn').addEventListener('click',async()=>{
+    const{data:{session:freshSession}}=await sb.auth.getSession();
+    if(freshSession)currentSession=freshSession;
     const session=currentSession;
     if(!session){window.location.href='/auth.html';return;}
     const topic=document.getElementById('topic').value.trim();
@@ -993,17 +1012,31 @@
   function toggleLang(){
     document.getElementById('lang-dropdown').classList.toggle('open');
   }
-  function setLang(code, flag, label){
+  function setLang(el, code, flag, label){
     document.getElementById('lang-flag').textContent = flag;
     document.getElementById('lang-label').textContent = code;
     document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('active'));
-    event.target.closest('.lang-option').classList.add('active');
+    el.classList.add('active');
     document.getElementById('lang-dropdown').classList.remove('open');
-    // Auto-set output language in generator
     const langMap = {'EN':'English','HI':'Hindi','ES':'Spanish','AR':'Arabic','PT':'Portuguese','ID':'Indonesian','FR':'French','DE':'German','JA':'Japanese','KO':'Korean'};
     const sel = document.getElementById('language');
     if(sel && langMap[code]) sel.value = langMap[code];
+    localStorage.setItem('vg_lang_code', code);
+    localStorage.setItem('vg_lang_flag', flag);
   }
+  // Restore saved language on load
+  (function(){
+    const code = localStorage.getItem('vg_lang_code');
+    const flag = localStorage.getItem('vg_lang_flag');
+    if(code && flag){
+      document.getElementById('lang-flag').textContent = flag;
+      document.getElementById('lang-label').textContent = code;
+      document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('active'));
+      const langMap = {'EN':'English','HI':'Hindi','ES':'Spanish','AR':'Arabic','PT':'Portuguese','ID':'Indonesian','FR':'French','DE':'German','JA':'Japanese','KO':'Korean'};
+      const sel = document.getElementById('language');
+      if(sel && langMap[code]) sel.value = langMap[code];
+    }
+  })();
   document.addEventListener('click', function(e){
     if(!e.target.closest('.lang-wrap')) document.getElementById('lang-dropdown')?.classList.remove('open');
   });
