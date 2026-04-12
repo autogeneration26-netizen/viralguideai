@@ -904,7 +904,7 @@
   }
 
   const{createClient}=supabase;
-  const sb=createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  const sb=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
   let currentSession=null;
 
   function updateUI(session){
@@ -915,8 +915,8 @@
     else{document.getElementById('user-email').textContent='';signoutBtn.style.display='none';getStartedBtn.style.display='inline-block';}
   }
 
-  sb.auth.getSession().then(({data:{session}})=>{updateUI(session);if(session)currentSession=session;});
-  sb.auth.onAuthStateChange((_e,session)=>{updateUI(session);if(session)currentSession=session;});
+  sb.auth.getSession().then(({data:{session}})=>updateUI(session));
+  sb.auth.onAuthStateChange((_e,session)=>updateUI(session));
 
   document.getElementById('auth-btn').addEventListener('click',async()=>{
     if(currentSession){await sb.auth.signOut();}
@@ -924,8 +924,7 @@
   });
 
   document.getElementById('generate-btn').addEventListener('click',async()=>{
-    const{data:{session:freshSession}}=await sb.auth.getSession();
-    if(freshSession)currentSession=freshSession;
+    const{data:{session:fs}}=await sb.auth.getSession();if(fs)currentSession=fs;
     const session=currentSession;
     if(!session){window.location.href='/auth.html';return;}
     const topic=document.getElementById('topic').value.trim();
@@ -1016,27 +1015,13 @@
     document.getElementById('lang-flag').textContent = flag;
     document.getElementById('lang-label').textContent = code;
     document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('active'));
-    el.classList.add('active');
+    (el.closest?el.closest('.lang-option'):el).classList.add('active');
     document.getElementById('lang-dropdown').classList.remove('open');
+    // Auto-set output language in generator
     const langMap = {'EN':'English','HI':'Hindi','ES':'Spanish','AR':'Arabic','PT':'Portuguese','ID':'Indonesian','FR':'French','DE':'German','JA':'Japanese','KO':'Korean'};
     const sel = document.getElementById('language');
     if(sel && langMap[code]) sel.value = langMap[code];
-    localStorage.setItem('vg_lang_code', code);
-    localStorage.setItem('vg_lang_flag', flag);
   }
-  // Restore saved language on load
-  (function(){
-    const code = localStorage.getItem('vg_lang_code');
-    const flag = localStorage.getItem('vg_lang_flag');
-    if(code && flag){
-      document.getElementById('lang-flag').textContent = flag;
-      document.getElementById('lang-label').textContent = code;
-      document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('active'));
-      const langMap = {'EN':'English','HI':'Hindi','ES':'Spanish','AR':'Arabic','PT':'Portuguese','ID':'Indonesian','FR':'French','DE':'German','JA':'Japanese','KO':'Korean'};
-      const sel = document.getElementById('language');
-      if(sel && langMap[code]) sel.value = langMap[code];
-    }
-  })();
   document.addEventListener('click', function(e){
     if(!e.target.closest('.lang-wrap')) document.getElementById('lang-dropdown')?.classList.remove('open');
   });
